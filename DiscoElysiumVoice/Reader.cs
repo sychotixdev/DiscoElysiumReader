@@ -33,8 +33,6 @@ namespace DiscoElysiumVoice
             synth.SetOutputToDefaultAudioDevice();
 
             initializeVoiceList();
-
-            watch();
         }
 
         private void initializeVoiceList()
@@ -50,7 +48,7 @@ namespace DiscoElysiumVoice
         }
 
 
-        private void watch()
+        public void watch()
         {
             Watcher?.Dispose();
 

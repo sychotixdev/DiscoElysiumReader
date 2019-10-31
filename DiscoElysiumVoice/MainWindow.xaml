@@ -23,5 +23,6 @@
         <Label Content="Current Conversation Info" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Margin="264,78,0,0"/>
         <Label Content="Game location" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"/>
         <TextBox x:Name="gameLocationTextBox" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="C:\Program Files (x86)\Steam\steamapps\common\Disco Elysium\" VerticalAlignment="Top" Width="519" Margin="114,13,0,0" TextChanged="GameLocationTextBox_OnTextChanged"/>
+        <Button Content="Start Reading" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="10,281,0,0" Click="Button_Click"/>
     </Grid>
 </Window>

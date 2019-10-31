@@ -55,12 +55,6 @@ namespace DiscoElysiumVoice
 
         }
 
-        private void DoWorkButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            
-           
-        }
-
         private void CustomVoiceButton_Click(object sender, RoutedEventArgs e)
         {
             string customConversant = customConversantName.Text;
@@ -91,6 +85,11 @@ namespace DiscoElysiumVoice
         {
             if (!String.IsNullOrEmpty((String)defaultVoiceComboBox.SelectedItem))
                 ReaderDataModel.DefaultVoice = (String)defaultVoiceComboBox.SelectedItem;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Reader.watch();
         }
     }
 }

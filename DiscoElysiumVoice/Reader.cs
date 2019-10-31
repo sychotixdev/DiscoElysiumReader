@@ -107,8 +107,7 @@ namespace DiscoElysiumVoice
             if (objnew.ConversationId == -1)
                 return;
 
-            foreach (ReaderDialogueEntry dialogue in objnew.DialogueEntries.Where(x =>
-                x.UniqueMessageId > lastSpokenUniqueId))
+            foreach (ReaderDialogueEntry dialogue in objnew.DialogueEntries.Where(x => lastSpokenUniqueId == null || x.UniqueMessageId > lastSpokenUniqueId))
             {
                 if (dialogue?.Message == null)
                     return;

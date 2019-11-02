@@ -166,10 +166,15 @@ namespace DiscoElysiumVoice
 
             foreach (ReaderDialogueEntry dialogue in entriesToProcess)
             {
-                if (dialogue?.Message == null)
-                    return;
+                // If we somehow don't have a message, skip this entry
+                if (dialogue?.Message == null || String.IsNullOrWhiteSpace(dialogue.Message))
+                    continue;
 
-                ConversationTextBox?.Dispatcher?.Invoke(() => ConversationTextBox.Text = $"Actor: {objnew.ActorName}\nConversant: {objnew.Conversant}\nText:{dialogue.Message}");
+                // Skip the PC's entries. Less immersive
+                if (dialogue.IsPlayerCharacter)
+                    continue;
+
+                ConversationTextBox?.Dispatcher?.Invoke(() => ConversationTextBox.Text = $"Actor: {objnew.ActorName}\nConversant: {objnew.Conversant}\nText:{dialogue.Message}\nTest:{dialogue.Sequence}");
 
                 string selectedVoice = MainWindow.ReaderDataModel.DefaultVoice;
 

@@ -80,7 +80,7 @@ namespace DiscoElysiumReader.Mod
                         Conversation = new Conversation(conversationId, DialogueManager.Instance.ConversationModel.ActorInfo.Name, DialogueManager.Instance.ConversationModel.ConversantInfo.Name);
                     }
 
-                    Conversation.DialogueEntries.Add(new ReaderDialogueEntry(dialogueSubtitle.speakerInfo.Name, dialogueSubtitle.speakerInfo.IsPlayer, finalEntry.spokenLine, "", UniqueDialogEntry));
+                    Conversation.DialogueEntries.Add(new ReaderDialogueEntry(dialogueSubtitle.speakerInfo.Name, dialogueSubtitle.speakerInfo.IsPlayer, finalEntry.spokenLine, $"Sequence:{dialogueSubtitle.sequence}\nComments: {finalEntry.GetCommentString()}", UniqueDialogEntry));
 
 
                 }

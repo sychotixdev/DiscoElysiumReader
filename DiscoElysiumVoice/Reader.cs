@@ -56,8 +56,7 @@ namespace DiscoElysiumVoice
         {
             if (Watcher == null)
             {
-                Watch();
-                return true;
+                return Watch();
             }
             else
             {
@@ -67,18 +66,18 @@ namespace DiscoElysiumVoice
         }
 
 
-        private void Watch()
+        private bool Watch()
         {
             if (!Directory.Exists(MainWindow.ReaderDataModel.GamePath))
             {
                 MainWindow.ShowErrorMessage("Specified game path does not exist!");
-                return;
+                return false;
             }
 
             if (!File.Exists(Path.Combine(MainWindow.ReaderDataModel.GamePath, "disco.exe")))
             {
                 MainWindow.ShowErrorMessage("Game executable 'disco.exe' does not exist at the specified path. This may be the incorrect path.\nWe will still start watching, just in case... but you will need to change your inject script!");
-                return;
+                return false;
             }
 
             StopWatching();
@@ -89,6 +88,8 @@ namespace DiscoElysiumVoice
             Watcher.Filter = FileName;
             Watcher.Changed += new FileSystemEventHandler(OnChanged);
             Watcher.EnableRaisingEvents = true;
+
+            return true;
         }
 
         private void StopWatching()

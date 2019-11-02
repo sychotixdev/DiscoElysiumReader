@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace DiscoElysiumReader.Mod
 {
-    /*public static class UIHelper
+    public static class UIHelper
     {
         private static float
             x, y,
@@ -66,5 +66,5 @@ namespace DiscoElysiumReader.Mod
         {
             return GUI.HorizontalSlider(NextControlRect(), val, min, max);
         }
-    }*/
+    }
 }

@@ -5,24 +5,37 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DiscoElysiumVoice"
         mc:Ignorable="d"
-        Title="Disco Elysium Voice - By Sychotixx" Height="345.589" Width="651.402">
+        Title="Disco Elysium Voice - By Sychotixx" Height="372.922" Width="651.402">
 
     <Grid HorizontalAlignment="Right" Width="643">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="49*"/>
             <ColumnDefinition Width="215*"/>
         </Grid.ColumnDefinitions>
-        <TextBlock x:Name="ConversationTextBlock" HorizontalAlignment="Left" Margin="264,109,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="187" Width="190" Grid.Column="1"/>
-        <ComboBox x:Name="defaultVoiceComboBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="242" Margin="114,53,0,0" Height="29" Grid.ColumnSpan="2" SelectionChanged="DefaultVoiceComboBox_OnSelectionChanged"/>
-        <TextBox x:Name="customConversantName" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="Conversant Name" VerticalAlignment="Top" Width="190" Margin="7,129,0,0"/>
-        <ComboBox x:Name="customConversantSelectedVoice" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Top" Width="190" Margin="7,158,0,0"/>
-        <Button x:Name="addConversantButton" Content="Add custom voice" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Margin="35,194,0,0" Click="CustomVoiceButton_Click" Grid.ColumnSpan="2"/>
-        <ListBox x:Name="customConversantVoiceBox" HorizontalAlignment="Left" Height="116" VerticalAlignment="Top" Width="157" Grid.Column="1" Margin="83,129,0,0"/>
-        <Label Content="Custom Voices" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="27,98,0,0" RenderTransformOrigin="-0.212,0.359" Grid.Column="1"/>
-        <Label Content="Default Voice" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="3,53,0,0"/>
-        <Label Content="Current Conversation Info" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Margin="264,78,0,0"/>
+        <TextBlock x:Name="ConversationTextBlock" HorizontalAlignment="Left" Margin="264,79,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="187" Width="243" Grid.Column="1"/>
+        <ComboBox x:Name="defaultVoiceComboBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="258" Margin="114,48,0,0" Height="29" SelectionChanged="DefaultVoiceComboBox_OnSelectionChanged" Grid.ColumnSpan="2"/>
+        <Label Content="Default Voice" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,48,0,0"/>
+        <Label Content="Current Conversation Info" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Margin="257,48,0,0"/>
         <Label Content="Game location" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"/>
         <TextBox x:Name="gameLocationTextBox" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="C:\Program Files (x86)\Steam\steamapps\common\Disco Elysium\" VerticalAlignment="Top" Width="519" Margin="114,13,0,0" TextChanged="GameLocationTextBox_OnTextChanged"/>
-        <Button Content="Start Reading" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="10,281,0,0" Click="Button_Click"/>
+        <Button x:Name="startStopButton" Content="Start" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="15,305,0,0" Click="StartStopToggle"/>
+        <GroupBox Header="Custom Voices" HorizontalAlignment="Left" Height="144" VerticalAlignment="Top" Width="362" Margin="10,149,0,0" Grid.ColumnSpan="2">
+            <Canvas Margin="0,5,-12,-17">
+                <TextBox x:Name="customConversantName" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="You" VerticalAlignment="Top" Width="190" Canvas.Top="25"/>
+                <ComboBox x:Name="customConversantSelectedVoice" HorizontalAlignment="Left" VerticalAlignment="Top" Width="190" Canvas.Top="69"/>
+                <Button x:Name="addConversantButton" Content="Add custom voice" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Click="CustomVoiceButton_Click" Canvas.Left="29" Canvas.Top="96"/>
+                <ListBox x:Name="customConversantVoiceBox" HorizontalAlignment="Left" Height="116" VerticalAlignment="Top" Width="157" Canvas.Left="195"/>
+                <Label Content="Conversant Name" RenderTransformOrigin="0.5,0.5"/>
+                <Label Content="Voice" RenderTransformOrigin="0.5,0.5" Canvas.Top="43"/>
+            </Canvas>
+        </GroupBox>
+        <Button Content="Skip Text" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="114,305,0,0" Click="SkipText" Grid.ColumnSpan="2"/>
+        <Label Content="Rate" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,88,0,0"/>
+        <Label Content="Volume" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,114,0,0" Width="62"/>
+        <TextBox HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="{Binding ElementName=speechRateSlider,Path=Value}" VerticalAlignment="Top" Width="35" Margin="133,92,0,0" TextChanged="SpeechRate_TextChanged" Grid.Column="1"/>
+        <TextBox HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="{Binding ElementName=speechVolumeSlider,Path=Value}" VerticalAlignment="Top" Width="35" Margin="133,121,0,0" TextChanged="SpeechVolume_TextChanged" Grid.Column="1"/>
+        <Label Content="%" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="168,121,0,0" Grid.Column="1" RenderTransformOrigin="7.467,0.705"/>
+        <Slider x:Name="speechRateSlider" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="114,91,0,0" Width="133" Minimum="-10" SmallChange="1" TickPlacement="BottomRight" Grid.ColumnSpan="2" IsSnapToTickEnabled="True" AutoToolTipPlacement="BottomRight"/>
+        <Slider x:Name="speechVolumeSlider" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="114,120,0,0" Width="133" SmallChange="1" Grid.ColumnSpan="2" Maximum="100" Value="100" IsSnapToTickEnabled="True"/>
     </Grid>
 </Window>

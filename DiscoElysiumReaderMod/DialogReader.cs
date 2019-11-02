@@ -19,6 +19,9 @@ namespace DiscoElysiumReader.Mod
 
         public Conversation Conversation;
 
+        private string Text { get; set; }
+        private DateTime WhenToStopDisplaying { get; set; }
+
         private void OnEnable()
         {
             Lua.RegisterFunction("DialogReaderAlwaysChanging", null, typeof(DialogReader).GetMethod("DialogReaderAlwaysChanging"));
@@ -33,6 +36,23 @@ namespace DiscoElysiumReader.Mod
         {
             DialogueManager.AddLuaObserver("return DialogReaderAlwaysChanging();", LuaWatchFrequency.EveryDialogueEntry, new LuaChangedDelegate(this.DiscoReaderHandleNewDialogueEntry));
             ConversationLogger = SingletonComponent<Sunshine.ConversationLogger>.Singleton;
+
+            ShowDebugMessage("Sychotix's voice mod successfully injected! :)", 10);
+        }
+
+        protected void OnGUI()
+        {
+            if (String.IsNullOrEmpty(Text))
+                return;
+
+            if (WhenToStopDisplaying < DateTime.Now)
+            {
+                Text = "";
+                WhenToStopDisplaying = DateTime.MaxValue;
+            }
+
+            //GUI.Label(new Rect(10, 10, 100, 20), "Is this working yet lol");
+            UIHelper.Begin(Text, 1, 1, 1000, 100, 5, 100, 100);
         }
 
         private static long UniqueDialogEntry = 0;
@@ -47,18 +67,18 @@ namespace DiscoElysiumReader.Mod
             {
                 if (DialogueManager.IsConversationActive && DialogueManager.Instance.ConversationModel.HasValidEntry)
                 {
+                    Subtitle dialogueSubtitle = DialogueManager.Instance.currentConversationState.subtitle;
+
+                    if (dialogueSubtitle?.dialogueEntry == null)
+                        return;
+
+                    FinalEntry finalEntry = ConversationLogger.AssembleFinalEntry(dialogueSubtitle.dialogueEntry);
+
                     int conversationId = DialogueManager.Instance.ConversationModel.GetConversationID(DialogueManager.Instance.currentConversationState);
                     if (Conversation == null || Conversation.ConversationId != conversationId)
                     {
                         Conversation = new Conversation(conversationId, DialogueManager.Instance.ConversationModel.ActorInfo.Name, DialogueManager.Instance.ConversationModel.ConversantInfo.Name);
                     }
-
-                    Subtitle dialogueSubtitle = DialogueManager.Instance.currentConversationState.subtitle;
-
-                    if (dialogueSubtitle == null || dialogueSubtitle.dialogueEntry == null)
-                        return;
-
-                    FinalEntry finalEntry = ConversationLogger.AssembleFinalEntry(dialogueSubtitle.dialogueEntry);
 
                     Conversation.DialogueEntries.Add(new ReaderDialogueEntry(dialogueSubtitle.speakerInfo.Name, dialogueSubtitle.speakerInfo.IsPlayer, finalEntry.spokenLine, "", UniqueDialogEntry));
 
@@ -71,12 +91,12 @@ namespace DiscoElysiumReader.Mod
 
 
                 // Now to handle outputting to the file...
-                XmlSerializer SerializerObj = new XmlSerializer(typeof(Conversation));
+                XmlSerializer serializerObj = new XmlSerializer(typeof(Conversation));
                 Stream stream = null;
                 try
                 {
                     stream = new FileStream(@"WriteText.txt", FileMode.Create, FileAccess.Write);
-                    SerializerObj.Serialize(stream, Conversation);
+                    serializerObj.Serialize(stream, Conversation);
                 }
                 finally
                 {
@@ -85,10 +105,15 @@ namespace DiscoElysiumReader.Mod
             }
             catch (Exception e)
             {
+                ShowDebugMessage("Exception while writing file... " + e.Message, 30);
                 // We never want to throw an exception
             }
+        }
 
-            
+        private void ShowDebugMessage(string message, int seconds)
+        {
+            Text = message;
+            WhenToStopDisplaying = DateTime.Now.AddSeconds(seconds);
         }
     }
 }

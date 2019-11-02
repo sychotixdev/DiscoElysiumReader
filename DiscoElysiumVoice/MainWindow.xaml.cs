@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Speech.Synthesis;
@@ -60,9 +61,6 @@ namespace DiscoElysiumVoice
             string customConversant = customConversantName.Text;
             string selectedVoice = (String) customConversantSelectedVoice.SelectedItem;
 
-            ListBoxItem itm = new ListBoxItem();
-            itm.Content = "some text";
-
             CustomVoiceConfig customVoice = new CustomVoiceConfig
             {
                 ConversantName = customConversant,
@@ -87,9 +85,65 @@ namespace DiscoElysiumVoice
                 ReaderDataModel.DefaultVoice = (String)defaultVoiceComboBox.SelectedItem;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void StartStopToggle(object sender, RoutedEventArgs e)
         {
-            Reader.watch();
+            var button = sender as Button;
+
+            if (button == null)
+                return;
+
+            if (Reader.StopStart())
+            {
+                button.Content = "Stop";
+            }
+            else
+            {
+                button.Content = "Start";
+            }
+        }
+
+        private void SkipText(object sender, RoutedEventArgs e)
+        {
+            Reader.SkipText();
+        }
+
+        private void SpeechRate_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var textBox = sender as TextBox;
+
+            if (textBox != null && !String.IsNullOrWhiteSpace(textBox.Text))
+            {
+                if (Int32.TryParse(textBox.Text, out int rateResult) && rateResult >= -10 && rateResult <= 10)
+                {
+                    ReaderDataModel.SpeechRate = rateResult;
+                }
+                else if (textBox.Text != "-")
+                {
+                    ShowErrorMessage("Rate must be an integer between -10 and 10");
+                }
+            }
+        }
+
+        private void SpeechVolume_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var textBox = sender as TextBox;
+
+            if (textBox != null && !String.IsNullOrWhiteSpace(textBox.Text))
+            {
+                if (Int32.TryParse(textBox.Text, out int volumeResult) && volumeResult > 0 && volumeResult <= 100)
+                {
+                    ReaderDataModel.SpeechVolume = volumeResult;
+                }
+                else
+                {
+                    ShowErrorMessage("Volume must be an integer between 0 and 100");
+                }
+            }
+        }
+
+        public static void ShowErrorMessage(string errorMessage)
+        {
+            MessageBox.Show(errorMessage, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 }

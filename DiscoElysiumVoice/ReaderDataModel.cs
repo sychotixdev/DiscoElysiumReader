@@ -16,5 +16,7 @@ namespace DiscoElysiumVoice
         public string DefaultVoice { get; set; }
         public string GamePath { get; set; }
         public List<CustomVoiceConfig> CustomVoices { get; set; }
+        public int SpeechVolume { get; set; }
+        public int SpeechRate { get; set; }
     }
 }

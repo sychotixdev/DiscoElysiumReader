@@ -95,6 +95,8 @@ namespace DiscoElysiumVoice
         {
             Watcher?.Dispose();
             synth.SpeakAsyncCancelAll();
+            LastConversation = null;
+            Watcher = null;
         }
 
         public void SkipText()
@@ -154,7 +156,7 @@ namespace DiscoElysiumVoice
             // If our last read is null, only read the last entry
             if (lastSpokenUniqueId == null && objnew.DialogueEntries.Count > 0)
             {
-                entriesToProcess = new List<ReaderDialogueEntry>() { objnew.DialogueEntries.LastOrDefault() };
+                entriesToProcess = new List<ReaderDialogueEntry>() { objnew.DialogueEntries.OrderByDescending(x => x.UniqueMessageId).First() };
             }
             else
             {

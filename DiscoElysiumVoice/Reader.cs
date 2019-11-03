@@ -174,7 +174,12 @@ namespace DiscoElysiumVoice
                 if (dialogue.IsPlayerCharacter)
                     continue;
 
-                ConversationTextBox?.Dispatcher?.Invoke(() => ConversationTextBox.Text = $"Actor: {objnew.ActorName}\nConversant: {objnew.Conversant}\nText:{dialogue.Message}\nTest:{dialogue.Sequence}");
+                if (dialogue.Sequence != null && dialogue.Sequence.ToLower().Contains("voiceoverplay"))
+                {
+                    continue;
+                }
+
+                ConversationTextBox?.Dispatcher?.Invoke(() => ConversationTextBox.Text = $"Actor: {objnew.ActorName}\nConversant: {objnew.Conversant}\nText:{dialogue.Message}\nSequence:{dialogue.Sequence}");
 
                 string selectedVoice = MainWindow.ReaderDataModel.DefaultVoice;
 
